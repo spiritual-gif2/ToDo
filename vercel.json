@@ -1,0 +1,23 @@
+{
+    "build": {
+        "env": {
+            "DATABASE_PATH": "database.db"
+        }
+    },
+    "functions": {
+        "server.js": {
+            "memory": 128,
+            "maxDuration": 10
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "/server.js"
+        },
+        {
+            "source": "/:path*",
+            "destination": "/public/index.html"
+        }
+    ]
+}
