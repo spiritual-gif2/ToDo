@@ -4,6 +4,13 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
 
+const TelegramBot = require('node-telegram-bot-api');
+
+// Replace 'YOUR_BOT_API_TOKEN' with your Telegram bot token from BotFather
+const token = '7622321751:AAFY9p2wr7TLji_NGH0V9BtaKova2xTnYCM';
+const bot = new TelegramBot(token, { polling: true });
+
+
 const app = express();
 const db = new sqlite3.Database("database.db");
 
@@ -48,6 +55,30 @@ app.delete("/api/tasks/:id", (req, res) => {
     res.sendStatus(200);
   });
 });
+
+
+// Listen for "/start" command
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  
+  // Send a welcome message with an inline button that opens your To-Do app
+  bot.sendMessage(chatId, 'Welcome! Manage your tasks:', {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { 
+            text: 'Open To-Do App', 
+            web_app: { 
+              url: 'http://ec2-52-91-60-230.compute-1.amazonaws.com/' 
+            }
+          }
+        ],
+      ],
+    },
+  });
+});
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
